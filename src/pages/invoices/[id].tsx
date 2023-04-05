@@ -28,7 +28,7 @@ const InoviceDetails = ({ invoice }: { invoice: Invoice }) => {
                           </dt>
                           <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                             {invoice.bitpay_id}
-                            <span className="ml-2 inline-flex items-center rounded-full bg-gray-100 px-3 py-0.5 text-sm font-medium capitalize text-green-800">
+                            <span className="ml-2 inline-flex items-center rounded-full bg-gray-100 px-3 py-0.5 text-sm font-medium capitalize text-gray-800">
                               {invoice.status}
                             </span>
                           </dd>
@@ -81,7 +81,9 @@ export default InoviceDetails;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { id } = query;
-  const res = await fetch(`http://localhost:3000/api/invoices/${id}`);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/invoices/${id}`
+  );
   const { data } = await res.json();
 
   if (!data) {
