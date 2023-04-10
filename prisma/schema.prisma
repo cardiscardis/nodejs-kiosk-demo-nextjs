@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model InvoicePayment {
+  id                                Int      @id @default(autoincrement())
+  amount_paid                       Float?
+  display_amount_paid               String?
+  underpaid_amount                  Float?
+  overpaid_amount                   Float?
+  non_pay_pro_payment_received      String?
+  transaction_currency              String?
+  universal_codes_payment_string    String?
+  universal_codes_verification_link String?
+  Invoice                           Invoice?
+}
+
+model InvoiceBuyerProvidedInfo {
+  id                            Int           @id @default(autoincrement())
+  name                          String?
+  phone_number                  String?
+  selected_wallet               String?
+  email_address                 String?
+  selected_transaction_currency String?
+  sms                           String?
+  sms_verified                  String?
+  InvoiceBuyer                  InvoiceBuyer?
+}
+
+model InvoiceBuyer {
+  id                             Int                       @id @default(autoincrement())
+  name                           String?
+  address1                       String?
+  address2                       String?
+  city                           String?
+  region                         String?
+  postal_code                    String?
+  country                        String?
+  email                          String?
+  phone                          String?
+  notify                         String?
+  buyer_provided_email           String?
+  invoice_buyer_provided_info    InvoiceBuyerProvidedInfo? @relation(fields: [invoice_buyer_provided_info_id], references: [id])
+  invoice_buyer_provided_info_id Int?                      @unique
+}
+
+model Invoice {
+  id                    Int             @id @default(autoincrement())
+  pos_data_json         String?
+  price                 Float?
+  status                String?
+  currency_code         String?
+  token                 String?
+  bitpay_id             String?
+  bitpay_order_id       String?
+  bitpay_guid           String?
+  bitpay_url            String?
+  merchant_name         String?
+  created_date          DateTime?
+  expiration_time       DateTime?
+  transaction_speed     String?
+  json_pay_pro_required Boolean?
+  item_description      String?
+  low_fee_detected      Boolean?
+  invoice_payment       InvoicePayment? @relation(fields: [invoice_payment_id], references: [id])
+  invoice_payment_id    Int?            @unique
+}

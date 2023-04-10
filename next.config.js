@@ -1,8 +1,11 @@
+const withYAML = require('next-yaml');
 const nextConfig = {
+  images: {
+    domains: ['via.placeholder.com', 'bitpay.com'],
+  },
   reactStrictMode: true,
-}
-module.exports = nextConfig;
+};
 
+module.exports = nextConfig;
 // next.config.js
-const withYAML = require("next-yaml");
 module.exports = withYAML(module.exports);
