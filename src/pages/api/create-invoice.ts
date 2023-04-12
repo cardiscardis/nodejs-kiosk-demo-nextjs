@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { createInvoice } from '@/lib/bitpay';
+import { createInvoice } from '@/services/invoice';
 
 export default async function handler(
   req: NextApiRequest,
