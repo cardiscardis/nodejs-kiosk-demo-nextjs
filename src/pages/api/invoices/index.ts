@@ -1,5 +1,5 @@
-import { getInvoices } from '@/lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getInvoices } from '@/services/invoice';
 
 export default async function handler(
   req: NextApiRequest,

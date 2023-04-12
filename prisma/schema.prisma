@@ -11,16 +11,65 @@ datasource db {
 }
 
 model InvoicePayment {
-  id                                Int      @id @default(autoincrement())
+  id                                Int                      @id @default(autoincrement())
   amount_paid                       Float?
   display_amount_paid               String?
   underpaid_amount                  Float?
   overpaid_amount                   Float?
-  non_pay_pro_payment_received      String?
+  non_pay_pro_payment_received      Boolean?
   transaction_currency              String?
   universal_codes_payment_string    String?
   universal_codes_verification_link String?
   Invoice                           Invoice?
+  payment_curenncies                InvoicePaymentCurrency[]
+}
+
+model InvoicePaymentCurrency {
+  id                                                         Int                                                 @id @default(autoincrement())
+  InvoicePayment                                             InvoicePayment?                                     @relation(fields: [invoice_payment_id], references: [id])
+  invoice_payment_id                                         Int?
+  currency_code                                              String?
+  total                                                      Float?
+  subtotal                                                   Float?
+  display_total                                              String?
+  display_subtotal                                           String?
+  currency_codes                                             InvoicePaymentCurrencyCode[]
+  exchange_rates                                             InvoicePaymentCurrencyExchangeRate[]
+  miner_fee                                                  InvoicePyamentCurrencyMinerFee?                     @relation(fields: [invoice_pyament_currency_miner_fee_id], references: [id])
+  invoice_pyament_currency_miner_fee_id                      Int?                                                @unique
+  supported_transaction_currency                             InvoicePaymentCurrencySupportedTransactionCurrency? @relation(fields: [invoice_payment_currency_supported_transaction_currency_id], references: [id])
+  invoice_payment_currency_supported_transaction_currency_id Int?                                                @unique
+}
+
+model InvoicePaymentCurrencyCode {
+  id                          Int                     @id @default(autoincrement())
+  code                        String?
+  code_url                    String?
+  InvoicePaymentCurrency      InvoicePaymentCurrency? @relation(fields: [invoice_payment_currency_id], references: [id])
+  invoice_payment_currency_id Int?
+}
+
+model InvoicePaymentCurrencyExchangeRate {
+  id                          Int                     @id @default(autoincrement())
+  currency_code               String
+  rate                        Float?
+  InvoicePaymentCurrency      InvoicePaymentCurrency? @relation(fields: [invoice_payment_currency_id], references: [id])
+  invoice_payment_currency_id Int?
+}
+
+model InvoicePyamentCurrencyMinerFee {
+  id                     Int                     @id @default(autoincrement())
+  satoshis_per_byte      Float?
+  total_fee              Float?
+  fiat_amount            Float?
+  InvoicePaymentCurrency InvoicePaymentCurrency?
+}
+
+model InvoicePaymentCurrencySupportedTransactionCurrency {
+  id                     Int                     @id @default(autoincrement())
+  enabled                Boolean?
+  reason                 String?
+  InvoicePaymentCurrency InvoicePaymentCurrency?
 }
 
 model InvoiceBuyerProvidedInfo {
@@ -46,10 +95,11 @@ model InvoiceBuyer {
   country                        String?
   email                          String?
   phone                          String?
-  notify                         String?
+  notify                         Boolean?
   buyer_provided_email           String?
   invoice_buyer_provided_info    InvoiceBuyerProvidedInfo? @relation(fields: [invoice_buyer_provided_info_id], references: [id])
   invoice_buyer_provided_info_id Int?                      @unique
+  Invoice                        Invoice?
 }
 
 model Invoice {
@@ -72,4 +122,6 @@ model Invoice {
   low_fee_detected      Boolean?
   invoice_payment       InvoicePayment? @relation(fields: [invoice_payment_id], references: [id])
   invoice_payment_id    Int?            @unique
+  invoice_buyer         InvoiceBuyer?   @relation(fields: [invoice_buyer_id], references: [id])
+  invoice_buyer_id      Int?            @unique
 }

@@ -1,5 +1,5 @@
-import { findInvoiceById } from '@/lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { findInvoiceById } from '@/services/invoice';
 
 export default async function handler(
   req: NextApiRequest,
