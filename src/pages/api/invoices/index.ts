@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getInvoices } from '@/services/invoice';
+import { invoiceService } from '@/services/invoice';
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,7 +9,10 @@ export default async function handler(
   const limit = parseInt(req.query.limit as string) || 10;
 
   try {
-    const { invoices, count, next, prev } = await getInvoices(page, limit);
+    const { invoices, count, next, prev } = await invoiceService.getInvoices(
+      page,
+      limit
+    );
 
     return res.status(200).json({
       data: invoices,

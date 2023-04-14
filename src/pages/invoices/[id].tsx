@@ -3,8 +3,10 @@ import dayjs from 'dayjs';
 import { Invoice } from '@prisma/client';
 import { formatNumber } from '@/utils';
 import PageHeader from '@/components/PageHeader';
+import useInvoices from '@/hooks/useInvoices';
 
-const InoviceDetails = ({ invoice }: { invoice: Invoice }) => {
+const InoviceDetails = ({ data }: { data: Invoice }) => {
+  const { invoice } = useInvoices(null, data);
   return (
     <main>
       <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -97,7 +99,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   return {
     props: {
-      invoice: data,
+      data,
     },
   };
 };
