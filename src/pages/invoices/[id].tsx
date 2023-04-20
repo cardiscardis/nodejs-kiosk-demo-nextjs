@@ -6,6 +6,7 @@ import useInvoices from '@/hooks/useInvoices';
 import NotificationsWrapper from '@/components/NotificationsWrapper';
 import Notification from '@/components/Notification';
 import dayjs from 'dayjs';
+import logger from '@/utils/logger';
 
 const InoviceDetails = ({ data }: { data: Invoice }) => {
   const { invoice, events, setEvents } = useInvoices(null, data);
@@ -111,6 +112,14 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/invoices/${id}`
   );
   const { data } = await res.json();
+
+  logger.info({
+    code: 'INVOICE_GET',
+    message: 'Loaded invoice',
+    context: {
+      id,
+    },
+  });
 
   if (!data) {
     return {
