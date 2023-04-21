@@ -6,6 +6,7 @@ import useInvoices from '@/hooks/useInvoices';
 import PageHeader from '@/components/PageHeader';
 import Notification from '@/components/Notification';
 import NotificationsWrapper from '@/components/NotificationsWrapper';
+import logger from '@/utils/logger';
 
 interface InvoicesPageProps {
   data: Invoice[];
@@ -180,6 +181,14 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   );
 
   const { data, total, next, prev } = await res.json();
+
+  logger.info({
+    code: 'INVOICE_GRID_GET',
+    message: 'Loaded invoice grid',
+    context: {
+      page,
+    },
+  });
 
   return {
     props: {

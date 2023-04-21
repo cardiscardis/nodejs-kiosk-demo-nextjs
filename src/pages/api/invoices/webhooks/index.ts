@@ -3,6 +3,8 @@ import { bitpayClient } from '@/lib/bitpay';
 import { prisma } from '@/lib/prisma';
 import { sseService } from '@/services/sse';
 import { Invoice } from 'bitpay-sdk/dist/Model';
+import { Prisma } from '@prisma/client';
+import logger from '@/utils/logger';
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,6 +14,14 @@ export default async function handler(
     data: Partial<Invoice>;
     event: { code: number; name: string };
   };
+
+  logger.info({
+    code: 'IPN_RECEIVED',
+    message: 'Received IPN',
+    context: {
+      ...req.body,
+    },
+  });
 
   try {
     const verifedInvoice = await bitpayClient.getInvoice(data.id as string);
@@ -27,6 +37,22 @@ export default async function handler(
       },
       data: {
         status: verifedInvoice.status,
+      },
+    });
+
+    logger.info({
+      code: 'IPN_VALIDATE_SUCCESS',
+      message: 'Successfully validated IPN',
+      context: {
+        id: verifedInvoice.id,
+      },
+    });
+
+    logger.info({
+      code: 'INVOICE_UPDATE_SUCCESS',
+      message: 'Successfully update invoice',
+      context: {
+        id: invoice.bitpay_id,
       },
     });
 
@@ -75,7 +101,26 @@ export default async function handler(
     sseService.sendEvents(eventData);
 
     return res.status(200).end();
-  } catch (e) {
+  } catch (e: any) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      logger.error({
+        code: 'INVOICE_UPDATE_FAIL',
+        message: 'Failed to update invoice',
+        context: {
+          id: data.id,
+        },
+      });
+    } else {
+      logger.error({
+        code: 'IPN_VALIDATE_FAIL',
+        message: 'Failed to validate IPN',
+        context: {
+          errorMessage: e.message,
+          stackTeace: e,
+        },
+      });
+    }
+
     return res.status(500).json(e);
   }
 }
