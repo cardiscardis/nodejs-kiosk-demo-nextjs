@@ -1,11 +1,12 @@
 import Link from 'next/link';
 import { GetServerSideProps, NextPage } from 'next';
 import { Invoice } from '@prisma/client';
-import PageHeader from '@/components/PageHeader';
 import { formatNumber } from '@/utils';
+import useInvoices from '@/hooks/useInvoices';
+import PageHeader from '@/components/PageHeader';
 
 interface InvoicesPageProps {
-  invoices: Invoice[];
+  data: Invoice[];
   next: { page: number; limit: number } | null;
   prev: { page: number; limit: number } | null;
   total: number;
@@ -14,13 +15,14 @@ interface InvoicesPageProps {
 }
 
 const Invoices: NextPage<InvoicesPageProps> = ({
-  invoices,
+  data,
   total,
   next,
   prev,
   page,
   limit,
 }) => {
+  const { invoices } = useInvoices(data);
   const cols = [
     { label: 'ID' },
     { label: 'Price' },
@@ -157,7 +159,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   return {
     props: {
-      invoices: data,
+      data,
       total,
       next,
       prev,
