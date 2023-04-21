@@ -1,6 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Invoice } from '@prisma/client';
 
+export type InvoiceEvent = {
+  eventName: string;
+  eventCode: number;
+  invoice: Partial<Invoice>;
+  message: {
+    type: 'Good' | 'Bad' | null;
+    content: string | null;
+  };
+  showed: boolean;
+};
+
 const useInvoices = (
   initialInvoicesState?: Invoice[] | null,
   initialInvoiceState?: Invoice | null
@@ -12,6 +23,7 @@ const useInvoices = (
     initialInvoiceState || {}
   );
   const [eventData, setEventData] = useState<Partial<Invoice> | null>(null);
+  const [events, setEvents] = useState<InvoiceEvent[]>([]);
 
   const handleInvoiceUpdate = useCallback(
     (data: Partial<Invoice>) => {
@@ -36,20 +48,23 @@ const useInvoices = (
     );
 
     sse.onmessage = (e) => {
-      const data = JSON.parse(e.data);
-      setEventData(data);
-      handleInvoiceUpdate(data);
+      const data: InvoiceEvent = JSON.parse(e.data);
+      setEventData(data.invoice);
+      setEvents([...events, { ...data, showed: false }]);
+      handleInvoiceUpdate(data.invoice);
     };
 
     return () => {
       sse.close();
     };
-  }, [invoices, eventData, handleInvoiceUpdate]);
+  }, [invoices, eventData, events, handleInvoiceUpdate]);
 
   return {
     invoices,
     invoice,
     eventData,
+    events,
+    setEvents,
   };
 };
 
