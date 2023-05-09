@@ -14,7 +14,7 @@ const Nav = () => {
         <div className="flex h-16 justify-between">
           <div className="flex">
             <div className="flex flex-shrink-0 items-center">
-              <Link href="/">
+              <Link href="/" onClick={() => setIsOpen(false)}>
                 <Image
                   className="h-8 w-auto"
                   src={config.bitpay.design.logo}
