@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npx prisma migrate deploy && next dev",
     "build": "next build",
-    "start": "npx prisma migrate deploy && npm run build && next start",
+    "dev": "next dev",
     "lint": "next lint",
+    "migrate": "npx prisma migrate deploy",
+    "start": "next start",
     "test": "jest",
     "test:watch": "jest --watch"
   },
