@@ -1,10 +1,12 @@
+import { Environment } from 'bitpay-sdk/dist/Environment';
 import applicationData from '../../application.yaml';
 
 export interface IConfig {
   bitpay: {
     token: string;
     notificationEmail: string;
-    environment: string;
+    environment: Environment;
+    mode: 'standard' | 'donation';
     design: {
       hero: {
         bgColor: string;
@@ -12,6 +14,43 @@ export interface IConfig {
         body: string;
       };
       logo: string;
+      posData: {
+        fields: {
+          type: string;
+          required: boolean;
+          id: string;
+          name: string;
+          label: string;
+          currency?: string;
+          options: {
+            id: string;
+            label: string;
+            value: string;
+          }[];
+        }[];
+      };
+    };
+    donation: {
+      denominations: number[];
+      footerText: string;
+      enableOther: boolean;
+      buttonSelectedBgColor: string;
+      buttonSelectedTextColor: string;
+      buyer: {
+        fields: {
+          type: string;
+          required: boolean;
+          id: string;
+          name: string;
+          label: string;
+          currency?: string;
+          options: {
+            id: string;
+            label: string;
+            value: string;
+          }[];
+        }[];
+      };
       posData: {
         fields: {
           type: string;

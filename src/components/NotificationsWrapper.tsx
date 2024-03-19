@@ -1,6 +1,10 @@
 import React, { ReactNode } from 'react';
 
-const NotificationsWrapper = ({ children }: { children?: ReactNode }) => {
+export default function NotificationsWrapper({
+  children,
+}: {
+  children?: ReactNode;
+}) {
   return (
     <div
       aria-live="assertive"
@@ -11,6 +15,4 @@ const NotificationsWrapper = ({ children }: { children?: ReactNode }) => {
       </div>
     </div>
   );
-};
-
-export default NotificationsWrapper;
+}

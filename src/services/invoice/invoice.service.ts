@@ -1,13 +1,16 @@
 import { bitpayClient } from '@/lib/bitpay';
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 import { Invoice } from 'bitpay-sdk/dist/Model';
 import { Prisma } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
 import { SupportedTransactionCurrency } from 'bitpay-sdk/dist/Model/Invoice/SupportedTransactionCurrency';
+import config from '@/config';
+import { Buyer } from 'bitpay-sdk/dist/Model/Invoice/Buyer';
 
 export interface InvoiceCreateInput {
   price: string;
   currency: string;
+  buyer?: Buyer;
 }
 
 export class InvoiceService {
@@ -35,9 +38,21 @@ export class InvoiceService {
 
   async createInvoice(payload: InvoiceCreateInput) {
     const data = new Invoice(parseFloat(payload.price), payload.currency);
+
+    if (config.bitpay.mode === 'donation') {
+      if (payload.buyer) {
+        data.buyer = payload.buyer;
+      }
+
+      delete payload.buyer;
+    }
+
     data.posData = JSON.stringify(payload);
     data.transactionSpeed = 'medium';
-    data.itemDesc = 'Example';
+    data.itemDesc =
+      (config.bitpay.mode === 'standard' && 'Standard') ||
+      (config.bitpay.mode === 'donation' && 'Donation') ||
+      'Example';
     data.orderId = uuidv4();
     data.notificationURL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/invoices/webhooks`;
 
@@ -96,6 +111,10 @@ export class InvoiceService {
 
     const invoiceBuyerProvidedInfo: Prisma.InvoiceBuyerProvidedInfoCreateInput =
       {
+        //@ts-ignore
+        name: invoice?.buyerProvidedInfo?.name,
+        //@ts-ignore
+        phone_number: invoice?.buyerProvidedInfo?.phoneNumber,
         // TODO - SDK Add BuyerProvidedInfo to Interface
       };
 

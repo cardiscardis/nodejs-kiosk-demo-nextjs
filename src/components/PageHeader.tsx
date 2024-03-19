@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PageHeader = ({ title }: { title: string }) => {
+export default function PageHeader({ title }: { title: string }) {
   return (
     <header>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -10,6 +10,4 @@ const PageHeader = ({ title }: { title: string }) => {
       </div>
     </header>
   );
-};
-
-export default PageHeader;
+}

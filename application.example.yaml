@@ -2,6 +2,7 @@ bitpay:
   token:
   notificationEmail:
   environment:
+  mode: standard
   design:
     hero:
       bgColor: '#36454F'
@@ -45,3 +46,238 @@ bitpay:
           name: 'price'
           currency: 'USD'
           label: 'price'
+  donation:
+    footerText: 'Contributions or gifts to RECIPIENT are not tax deductible. Contributions are limited to $10,000 per PAC per election cycle ($5,000 primary and $5,000 general) and $5,600 per individual per election cycle ($2,800 primary and $2,800 general). Contributions from the general treasury funds of corporations, labor unions, and national banks are prohibited. Federal contractors and foreign nationals who are not admitted for permanent residence in the United States are prohibited from making contributions. All contributions must be from personal funds and may not be reimbursed or paid by any other person. Federal law requires us to use our best efforts to collect and report the name, mailing address, occupation, and name of employer of individuals whose contributions exceed $200 in an election cycle.'
+    buttonSelectedBgColor: '#2a3f90'
+    buttonSelectedTextColor: '#ffffff'
+    enableOther: true
+    denominations:
+      - 2800
+      - 1000
+      - 500
+      - 100
+      - 50
+    buyer:
+      fields:
+        - type: 'text'
+          required: true
+          id: 'name'
+          name: 'name'
+          label: 'Name'
+        - type: text
+          required: true
+          id: 'address1'
+          name: 'address1'
+          label: 'Address'
+        - type: 'text'
+          required: false
+          id: 'address2'
+          name: 'address2'
+          label: 'Address 2'
+        - type: 'text'
+          required: true
+          id: 'city'
+          name: 'locality'
+          label: 'City'
+        - type: 'select'
+          required: true
+          id: 'state'
+          name: 'region'
+          label: 'State'
+          options:
+            - id: '-'
+              label: '--Select a state--'
+              value: ''
+            - id: AL
+              label: Alabama
+              value: AL
+            - id: AK
+              label: Alaska
+              value: AK
+            - id: AZ
+              label: Arizona
+              value: AZ
+            - id: AR
+              label: Arkansas
+              value: AR
+            - id: CA
+              label: California
+              value: CA
+            - id: CO
+              label: Colorado
+              value: CO
+            - id: CT
+              label: Connecticut
+              value: CT
+            - id: DE
+              label: Delaware
+              value: DE
+            - id: DC
+              label: District Of Columbia
+              value: DC
+            - id: FL
+              label: Florida
+              value: FL
+            - id: GA
+              label: Georgia
+              value: GA
+            - id: HI
+              label: Hawaii
+              value: HI
+            - id: ID
+              label: Idaho
+              value: ID
+            - id: IL
+              label: Illinois
+              value: IL
+            - id: IN
+              label: Indiana
+              value: IN
+            - id: IA
+              label: Iowa
+              value: IA
+            - id: KS
+              label: Kansas
+              value: KS
+            - id: KY
+              label: Kentucky
+              value: KY
+            - id: LA
+              label: Louisiana
+              value: LA
+            - id: ME
+              label: Maine
+              value: ME
+            - id: MD
+              label: Maryland
+              value: MD
+            - id: MA
+              label: Massachusetts
+              value: MA
+            - id: MI
+              label: Michigan
+              value: MI
+            - id: MN
+              label: Minnesota
+              value: MN
+            - id: MS
+              label: Mississippi
+              value: MS
+            - id: MO
+              label: Missouri
+              value: MO
+            - id: MT
+              label: Montana
+              value: MT
+            - id: NE
+              label: Nebraska
+              value: NE
+            - id: NV
+              label: Nevada
+              value: NV
+            - id: NH
+              label: New Hampshire
+              value: NH
+            - id: NJ
+              label: New Jersey
+              value: NJ
+            - id: NM
+              label: New Mexico
+              value: NM
+            - id: NY
+              label: New York
+              value: NY
+            - id: NC
+              label: North Carolina
+              value: NC
+            - id: ND
+              label: North Dakota
+              value: ND
+            - id: OH
+              label: Ohio
+              value: OH
+            - id: OK
+              label: Oklahoma
+              value: OK
+            - id: OR
+              label: Oregon
+              value: OR
+            - id: PA
+              label: Pennsylvania
+              value: PA
+            - id: RI
+              label: Rhode Island
+              value: RI
+            - id: SC
+              label: South Carolina
+              value: SC
+            - id: SD
+              label: South Dakota
+              value: SD
+            - id: TN
+              label: Tennessee
+              value: TN
+            - id: TX
+              label: Texas
+              value: TX
+            - id: UT
+              label: Utah
+              value: UT
+            - id: VT
+              label: Vermont
+              value: VT
+            - id: VA
+              label: Virginia
+              value: VA
+            - id: WA
+              label: Washington
+              value: WA
+            - id: WV
+              label: West Virginia
+              value: WV
+            - id: WI
+              label: Wisconsin
+              value: WI
+            - id: WY
+              label: Wyoming
+              value: WY
+
+        - type: 'text'
+          required: true
+          id: 'zip'
+          name: 'postalCode'
+          label: 'ZIP'
+        - type: 'text'
+          required: true
+          id: 'phone'
+          name: 'phone'
+          label: 'Phone Number'
+        - type: 'email'
+          required: true
+          id: 'email'
+          name: 'email'
+          label: 'Email'
+    posData:
+      fields:
+        - type: 'text'
+          required: true
+          id: 'employer'
+          name: 'employer'
+          label: 'Employer'
+        - type: 'text'
+          required: true
+          id: 'occupation'
+          name: 'occupation'
+          label: 'Occupation'
+        - type: 'select'
+          required: true
+          id: 'fund'
+          name: 'fund'
+          label: 'Fund'
+          options:
+            - id: 'fund-1'
+              label: 'Fund #1'
+              value: 'fund-1'
+            - id: 'fund-2'
+              label: 'Fund #2'
+              value: 'fund-2'

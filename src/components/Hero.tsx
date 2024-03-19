@@ -1,6 +1,6 @@
 import config from '@/config';
 
-const Hero = () => {
+export default function Hero() {
   return (
     <div
       id="hero"
@@ -17,6 +17,4 @@ const Hero = () => {
       </div>
     </div>
   );
-};
-
-export default Hero;
+}

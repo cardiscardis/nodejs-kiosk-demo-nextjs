@@ -25,5 +25,6 @@ export default async function handler(
   res.flushHeaders();
   res.on('close', () => {
     sseService.removeClient(clientId);
+    res.end();
   });
 }
