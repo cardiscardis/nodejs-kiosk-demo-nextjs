@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import config from '@/config';
 import { FormEvent, useState } from 'react';
@@ -5,7 +7,7 @@ import { setInitialFormData } from '@/utils';
 import { Invoice } from '@prisma/client';
 import Error from './Error';
 
-const Form = () => {
+export default function Form() {
   const initialFormData = setInitialFormData();
   const formFields = config.bitpay.design.posData.fields;
   const [formData, setFormData] = useState<any>(initialFormData);
@@ -236,6 +238,4 @@ const Form = () => {
       </form>
     </>
   );
-};
-
-export default Form;
+}

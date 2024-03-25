@@ -1,13 +1,12 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import { invoiceService } from '@/services/invoice';
 import logger from '@/utils/logger';
+import { NextRequest, NextResponse } from 'next/server';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<any>
-) {
+export async function POST(req: NextRequest) {
+  const body = await req.json();
+
   try {
-    const data = await invoiceService.createInvoice(req.body);
+    const data = await invoiceService.createInvoice(body);
     logger.info({
       code: 'INVOICE_CREATE_SUCCESS',
       message: 'Successfully created invoice',
@@ -15,7 +14,8 @@ export default async function handler(
         id: data.bitpay_id,
       },
     });
-    return res.status(200).json(data);
+
+    return NextResponse.json(data);
   } catch (e: any) {
     logger.error({
       code: 'INVOICE_CREATE_FAIL',
@@ -25,6 +25,8 @@ export default async function handler(
         stackTrace: e,
       },
     });
-    return res.status(500).json(e);
+    return new Response(JSON.stringify(e), {
+      status: 500,
+    });
   }
 }

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { bitpayClient } from '@/lib/bitpay';
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 import { sseService } from '@/services/sse';
 import { Invoice } from 'bitpay-sdk/dist/Model';
 import { Prisma } from '@prisma/client';

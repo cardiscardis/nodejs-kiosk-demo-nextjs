@@ -1,12 +1,14 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
 import config from '@/config';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
-const Nav = () => {
+export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <nav className="border-b border-gray-200 bg-white">
@@ -29,7 +31,7 @@ const Nav = () => {
                 onClick={() => setIsOpen(false)}
                 href="/invoices"
                 className={`text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium ${
-                  router.pathname === '/invoices'
+                  pathname === '/invoices'
                     ? 'border-b-2 border-indigo-500'
                     : 'border-b-2 border-transparent'
                 }`}
@@ -92,7 +94,7 @@ const Nav = () => {
             onClick={() => setIsOpen(false)}
             href="/invoices"
             className={`bg-indigo-50 block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-              router.pathname === '/invoices'
+              pathname === '/invoices'
                 ? ' border-indigo-500 text-indigo-700'
                 : ''
             }`}
@@ -104,6 +106,4 @@ const Nav = () => {
       </div>
     </nav>
   );
-};
-
-export default Nav;
+}
