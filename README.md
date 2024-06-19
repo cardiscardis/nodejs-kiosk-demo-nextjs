@@ -97,7 +97,7 @@ and update the values.
 
 - `npm install`
 - `cp .env.example .env` and configure it
-- `cp application-example.yaml application.yaml` and configure it
+- `cp application.example.yaml application.yaml` and configure it
 - `npm run migrate`
 - To start in production mode run `npm run build && npm start`
 - To start in development mode run `npm run dev`
