@@ -1,32 +1,107 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# BitPay Kiosk Demo - Next.js
 
-## Getting Started
+This is a demonstration Next.js app to show how BitPay can be used in the
+context of a retail kiosk. It utilizes the the `pos` facade and with a simple
+configuration file you can customize the `posData` fields that are sent to
+BitPay. This app uses Prisma to manage the database schema and by default
+uses an embedded sqlite database to make it easy to start. Feel free to use other RDBMS like MySQL.
 
+## Functionality
+
+- Create invoices
+- View a grid of invoices (`/invoices`)
+- View invoice details (`/invoices/:invoiceId`)
+- Store invoices in a database
+- Receives instant payment notifications (IPN) to update the database
+- Uses EventSource to update the frontend upon receiving IPN
+
+## Prerequisites
+
+- BitPay Account
+- Node.js >= 18
+
+## Configuration
+
+### Environment Variables
+
+This app can use either a `.env` file or global environment variables. If you
+would like to use a `.env` file, you will need to copy `.env.example` to `.env`
+and update the values.
+
+### YAML Configuration
+
+| YAML Key                                       | Description                                                                      |
+| ---------------------------------------------- | -------------------------------------------------------------------------------- |
+| bitpay.design.hero.bgColor                     | CSS color for hero background                                                    |
+| bitpay.design.hero.title                       | The title to show in the hero                                                    |
+| bitpay.design.hero.body                        | The text to show under the title in the hero                                     |
+| bitpay.design.logo                             | URL for the logo                                                                 |
+| bitpay.design.posdata.fields                   | See the `POS Data Fields` section below                                          |
+| bitpay.design.mode                             | Determines whether the app should be run in `standard` or `donation` mode        |
+| bitpay.design.donation.denominations           | Available donations to choose. The highest value determined the maximum donation |
+| bitpay.design.donation.enableOther             | Determines whether the app should allow to use own donation value.               |
+| bitpay.design.donation.footerText              | The text to show in the footer                                                   |
+| bitpay.design.donation.buttonSelectedBgColor   | CSS color for selected donation background                                       |
+| bitpay.design.donation.buttonSelectedTextColor | CSS color for selected donation text                                             |
+| bitpay.token                                   | Your BitPay token                                                                |
+| bitpay.notificationEmail                       | The email you want to use for notifications                                      |
+| bitpay.environment                             | BitPay environment ( test / prod )                                               |
+
+### POS Data Fields
+
+#### Dropdown (posData)
+
+| YAML Key      | Description                                            |
+| ------------- | ------------------------------------------------------ |
+| type          | Set to "select"                                        |
+| required      | Determines whether the field should be required or not |
+| id            | Field identifier                                       |
+| name          | Field name                                             |
+| label         | Field label                                            |
+| options.id    | (options array) ID for a given selection               |
+| options.label | (options array) Label for a given selection            |
+| options.value | (options array) Value for a given selection            |
+
+#### Fieldset (posData)
+
+| YAML Key      | Description                                            |
+| ------------- | ------------------------------------------------------ |
+| type          | Set to "fieldset"                                      |
+| required      | Determines whether the field should be required or not |
+| name          | Field name                                             |
+| label         | Field label                                            |
+| options.id    | (options array) ID for a given selection               |
+| options.label | (options array) Label for a given selection            |
+| options.value | (options array) Value for a given selection            |
+
+#### Text (posData)
+
+| YAML Key | Description                                            |
+| -------- | ------------------------------------------------------ |
+| type     | Set to "text"                                          |
+| required | Determines whether the field should be required or not |
+| name     | Field name                                             |
+| label    | Field label                                            |
+
+#### Price
+
+| YAML Key | Description                                            |
+| -------- | ------------------------------------------------------ |
+| type     | Set to "price"                                         |
+| required | Determines whether the field should be required or not |
+| name     | Field name                                             |
+| label    | Field label                                            |
+| currency | Currency for the field                                 |
+
+## Running
+
+- `npm install`
 - `cp .env.example .env` and configure it
 - `cp application-example.yaml application.yaml` and configure it
-- `docker-compose up`
+- `npm run migrate`
+- To start in production mode run `npm run build && npm start`
+- To start in development mode run `npm run dev`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Testing
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Run `npm run test`
