@@ -1,7 +1,17 @@
 const withYAML = require('next-yaml');
+const { hostname } = require('os');
 const nextConfig = {
   images: {
-    domains: ['via.placeholder.com', 'bitpay.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'bitpay.com',
+      },
+    ],
   },
   reactStrictMode: true,
 };
