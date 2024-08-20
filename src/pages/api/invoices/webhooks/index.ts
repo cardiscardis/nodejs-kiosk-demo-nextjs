@@ -5,6 +5,8 @@ import { sseService } from '@/services/sse';
 import { Invoice } from 'bitpay-sdk/dist/Model';
 import { Prisma } from '@prisma/client';
 import logger from '@/utils/logger';
+import { webhookVerifier } from '@/services/webhooks';
+import config from '@/config';
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,6 +16,7 @@ export default async function handler(
     data: Partial<Invoice>;
     event: { code: number; name: string };
   };
+  const signature = req.headers['x-signature'] as string;
 
   logger.info({
     code: 'IPN_RECEIVED',
@@ -24,6 +27,16 @@ export default async function handler(
   });
 
   try {
+    const isVerified = webhookVerifier.verify(
+      config.bitpay.token,
+      JSON.stringify(req.body),
+      signature
+    );
+
+    if (!isVerified) {
+      throw new Error('Signature invalid');
+    }
+
     const verifedInvoice = await bitpayClient.getInvoice(data.id as string);
     const foundedInvoice = await prisma.invoice.findFirstOrThrow({
       where: {
@@ -119,6 +132,8 @@ export default async function handler(
           stackTeace: e,
         },
       });
+
+      return res.status(500).json(e.message);
     }
 
     return res.status(500).json(e);
