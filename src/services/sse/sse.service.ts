@@ -1,24 +1,20 @@
-import { NextApiResponse } from 'next';
+import EventEmitter from 'events';
 
 class SSEService {
-  clients: { id: string; res: NextApiResponse }[] = [];
+  private emitter = new EventEmitter();
 
   constructor() {}
 
-  addClient(newClient: { id: string; res: NextApiResponse }) {
-    this.clients.push(newClient);
+  public subscribe(callback: (message: any) => void): void {
+    this.emitter.once('message', callback);
   }
 
-  removeClient(clientId: string) {
-    this.clients = this.clients.filter((client) => client.id !== clientId);
+  public unsubscribe(callback: (message: any) => void): void {
+    this.emitter.off('message', callback);
   }
 
-  sendEvents(data: any) {
-    this.clients.forEach((client) => {
-      client.res.write(`id: ${client.id} \n`);
-      client.res.write(`data: ${JSON.stringify(data)} \n\n`);
-      client.res.flushHeaders();
-    });
+  public addEvent(message: any): void {
+    this.emitter.emit('message', message);
   }
 }
 

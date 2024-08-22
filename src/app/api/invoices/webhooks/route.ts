@@ -1,30 +1,43 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
+import { headers } from 'next/headers';
+import { webhookVerifier } from '@/services/webhooks';
 import { bitpayClient } from '@/lib/bitpay';
-import prisma from '@/lib/prisma';
-import { sseService } from '@/services/sse';
 import { Invoice } from 'bitpay-sdk/dist/Model';
 import { Prisma } from '@prisma/client';
+import { sseService } from '@/services/sse';
+import prisma from '@/lib/prisma';
 import logger from '@/utils/logger';
+import config from '@/config';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<any>
-) {
-  const { data, event } = req.body as {
+export async function POST(req: NextRequest) {
+  const body = (await req.json()) as {
     data: Partial<Invoice>;
     event: { code: number; name: string };
   };
+  const webhookSignature = headers().get('x-signature');
 
   logger.info({
     code: 'IPN_RECEIVED',
     message: 'Received IPN',
     context: {
-      ...req.body,
+      ...body,
     },
   });
 
   try {
-    const verifedInvoice = await bitpayClient.getInvoice(data.id as string);
+    const isVerified = webhookVerifier.verify(
+      config.bitpay.token,
+      JSON.stringify(body),
+      webhookSignature as string
+    );
+
+    if (!isVerified) {
+      throw new Error('Signature invalid');
+    }
+
+    const verifedInvoice = await bitpayClient.getInvoice(
+      body.data.id as string
+    );
     const foundedInvoice = await prisma.invoice.findFirstOrThrow({
       where: {
         bitpay_id: verifedInvoice.id,
@@ -92,22 +105,24 @@ export default async function handler(
     };
 
     const eventData = {
-      eventName: event.name,
-      eventCode: event.code,
+      eventName: body.event.name,
+      eventCode: body.event.code,
       invoice,
-      message: eventMessages[event.name],
+      message: eventMessages[body.event.name],
     };
 
-    sseService.sendEvents(eventData);
+    sseService.addEvent(eventData);
 
-    return res.status(200).end();
+    return new NextResponse(null, {
+      status: 200,
+    });
   } catch (e: any) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       logger.error({
         code: 'INVOICE_UPDATE_FAIL',
         message: 'Failed to update invoice',
         context: {
-          id: data.id,
+          id: body.data.id,
         },
       });
     } else {
@@ -119,8 +134,14 @@ export default async function handler(
           stackTeace: e,
         },
       });
+
+      return NextResponse.json(e.message, {
+        status: 500,
+      });
     }
 
-    return res.status(500).json(e);
+    return NextResponse.json(e, {
+      status: 500,
+    });
   }
 }
