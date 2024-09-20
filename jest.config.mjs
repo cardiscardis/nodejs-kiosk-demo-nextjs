@@ -23,6 +23,7 @@ const config = {
   },
   setupFiles: ['<rootDir>/configJSDom.ts'],
   verbose: true,
+  testMatch: ['<rootDir>/__tests__/unit/**/**/*.{ts,tsx}'],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

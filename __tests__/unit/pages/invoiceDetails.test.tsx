@@ -1,4 +1,4 @@
-import InoviceDetails from '@/pages/invoices/[id]';
+import InoviceDetails from '@/pages/invoices/[id]/page';
 import { Invoice } from '@prisma/client';
 import { render } from '@testing-library/react';
 
