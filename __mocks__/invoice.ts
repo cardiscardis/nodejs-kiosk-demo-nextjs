@@ -1,4 +1,4 @@
-export const createdInvoice = {
+export const mockedInvoice = {
   url: 'https://test.bitpay.com/invoice?id=MCeWQcprBU8T9DhyxuNqVz',
   posData:
     '{"store":"store-1","register":"1","reg_transaction_no":"x","price":"2","currency":"USD"}',

@@ -1,20 +1,67 @@
 import { invoiceService } from '@/services/invoice';
-import { describe, test, vi, it, expect, beforeEach, afterEach } from 'vitest';
-import { createdInvoice } from '../../__mocks__/createdInvoice';
-import { sampleService } from '@/services/sample';
+import { describe, vi, it, expect, afterEach } from 'vitest';
+import { mockedInvoice } from '../../__mocks__/invoice';
+import prisma from '__mocks__/prisma';
 
-// vi.mock('@/services/invoice', async (importOriginal) => ({
-//   ...(await importOriginal<typeof import('@/services/invoice')>()),
-//   createInvoice: vi.fn(),
-// }));
+vi.mock('@/lib/prisma');
+vi.mock('@/services/invoice');
 
-describe('Posts', () => {
-  beforeEach(() => {});
+describe('Invoices', async () => {
   afterEach(() => {
     vi.clearAllMocks();
   });
 
-  it('should add post', () => {
-    console.log(process.env);
+  it('should create invoice', async () => {
+    vi.mocked(invoiceService.createInvoice).mockResolvedValue(
+      mockedInvoice as any
+    );
+
+    const invoice = await invoiceService.createInvoice({
+      currency: 'USD',
+      price: '2',
+    });
+
+    expect(invoice).toStrictEqual(mockedInvoice);
+  });
+
+  it('should save invoice', async () => {
+    prisma.invoice.create.mockResolvedValue(mockedInvoice as any);
+    vi.mocked(invoiceService.saveInvoice).mockResolvedValue(
+      mockedInvoice as any
+    );
+
+    const invoice = await invoiceService.saveInvoice(mockedInvoice as any);
+
+    expect(invoice).toStrictEqual(mockedInvoice);
+  });
+
+  it('should get invoices', async () => {
+    vi.mocked(invoiceService.getInvoices).mockResolvedValue({
+      count: 1,
+      prev: {},
+      next: {},
+      invoices: [
+        {
+          id: 1,
+          price: 10,
+          currency_code: 'USD',
+        },
+      ],
+    } as any);
+
+    const invoices = await invoiceService.getInvoices(1, 10);
+
+    expect(invoices).toStrictEqual({
+      count: 1,
+      prev: {},
+      next: {},
+      invoices: [
+        {
+          id: 1,
+          price: 10,
+          currency_code: 'USD',
+        },
+      ],
+    });
   });
 });
