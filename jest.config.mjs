@@ -16,13 +16,14 @@ const config = {
   collectCoverageFrom: ['src/**/*.{ts,tsx,js,jsx}', '!src/**/*.d.ts'],
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1',
-    'application.yaml': '<rootDir>/__mocks__/application.test.yaml',
+    'application.yaml': '<rootDir>/application.example.yaml',
   },
   transform: {
     '\\.yaml$': '<rootDir>/jest-yaml-transformer.js',
   },
   setupFiles: ['<rootDir>/configJSDom.ts'],
   verbose: true,
+  testMatch: ['<rootDir>/__tests__/unit/**/**/*.{ts,tsx}'],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

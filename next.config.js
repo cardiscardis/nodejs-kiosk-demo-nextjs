@@ -1,5 +1,5 @@
 const withYAML = require('next-yaml');
-const { hostname } = require('os');
+
 const nextConfig = {
   images: {
     remotePatterns: [
