@@ -3,7 +3,7 @@ import Form from '@/components/Form';
 import Hero from '@/components/Hero';
 import config from '@/config';
 
-export default function Home() {
+export default async function Home() {
   return (
     <>
       {config.bitpay.mode === 'standard' ? (

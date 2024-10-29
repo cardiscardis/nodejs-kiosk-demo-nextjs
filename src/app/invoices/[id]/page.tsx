@@ -1,7 +1,7 @@
 import InvoiceDetails from '@/components/InvoiceDetails';
 import PageHeader from '@/components/PageHeader';
 import logger from '@/utils/logger';
-import { Invoice } from '@prisma/client';
+import { Invoice as InvoiceDto } from '@prisma/client';
 import { redirect } from 'next/navigation';
 
 export default async function Invoice({ params }: { params: { id: string } }) {
@@ -35,5 +35,5 @@ const getInvoice = async (id: number) => {
     },
   });
 
-  return data as Invoice;
+  return data as InvoiceDto;
 };
