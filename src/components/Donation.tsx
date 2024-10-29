@@ -21,6 +21,7 @@ export default function Donation() {
   };
 
   const [formData, setFormData] = useState<{
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     buyer?: {};
     price?: string | number;
     currency?: string;
@@ -80,6 +81,7 @@ export default function Donation() {
       }
 
       setLoading(false);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       setError(JSON.stringify(e));
       setLoading(false);

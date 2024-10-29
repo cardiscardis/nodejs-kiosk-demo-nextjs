@@ -4,11 +4,12 @@ import InvoicesPagination from '@/components/InvoicesPagination';
 import { Invoice } from '@prisma/client';
 import logger from '@/utils/logger';
 
-export default async function Invoices({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string };
-}) {
+export default async function Invoices(
+  props: {
+    searchParams: Promise<{ [key: string]: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const page = parseInt(searchParams.page) || 1;
   const limit = parseInt(searchParams.limit) || 10;
   const { data: invoices, total, next, prev } = await getInvoices(page, limit);
