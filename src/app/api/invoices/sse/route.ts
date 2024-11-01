@@ -7,6 +7,7 @@ export async function GET(req: NextRequest) {
   const encoder = new TextEncoder();
   const customReadable = new ReadableStream({
     start(controller) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const sendEvent = (data: any) => {
         const message = `data: ${JSON.stringify(data)}\n\n`;
         controller.enqueue(encoder.encode(message));

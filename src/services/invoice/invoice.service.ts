@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { bitpayClient } from '@/lib/bitpay';
 import prisma from '@/lib/prisma';
 import { Invoice } from 'bitpay-sdk/dist/Model';

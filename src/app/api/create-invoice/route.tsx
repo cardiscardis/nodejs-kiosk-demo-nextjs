@@ -16,6 +16,7 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(data);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
     logger.error({
       code: 'INVOICE_CREATE_FAIL',

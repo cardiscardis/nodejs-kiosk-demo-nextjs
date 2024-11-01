@@ -10,6 +10,7 @@ import Error from './Error';
 export default function Form() {
   const initialFormData = setInitialFormData();
   const formFields = config.bitpay.design.posData.fields;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [formData, setFormData] = useState<any>(initialFormData);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -39,6 +40,7 @@ export default function Form() {
       if (bitpay_url) {
         window.location.href = bitpay_url;
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       setError(e);
     }

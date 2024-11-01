@@ -4,7 +4,8 @@ import logger from '@/utils/logger';
 import { Invoice as InvoiceDto } from '@prisma/client';
 import { redirect } from 'next/navigation';
 
-export default async function Invoice({ params }: { params: { id: string } }) {
+export default async function Invoice(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const invoice = await getInvoice(parseInt(params.id));
 
   if (!invoice) {

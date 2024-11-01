@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     data: Partial<Invoice>;
     event: { code: number; name: string };
   };
-  const webhookSignature = headers().get('x-signature');
+  const webhookSignature = (await headers()).get('x-signature');
 
   logger.info({
     code: 'IPN_RECEIVED',
@@ -116,6 +116,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse(null, {
       status: 200,
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       logger.error({

@@ -8,6 +8,7 @@ export const formatNumber = (number: number, currencyCode: string) => {
 };
 
 export const setInitialFormData = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initialFormData: any = {};
   for (const field of config.bitpay.design.posData.fields) {
     initialFormData[field.id] = null;
