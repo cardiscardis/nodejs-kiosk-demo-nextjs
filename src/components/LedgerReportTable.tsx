@@ -13,7 +13,7 @@ export default function LedgerReportTable({
   const [page, setPage] = useState(1);
   const limit = 10;
   const showingFrom = ledgerReport.length ? (page - 1) * limit + 1 : 0;
-  const showingTo = page * limit;
+  const showingTo = (page - 1) * limit + data.length;
 
   const cols = [
     { label: 'ID', field: 'id' },
