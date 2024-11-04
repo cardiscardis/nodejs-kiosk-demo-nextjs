@@ -98,6 +98,20 @@ export default function LedgerReportTable({
                     </tr>
                   );
                 })}
+
+              {data.length === 0 && (
+                <tr>
+                  <td
+                    className="text-center py-20"
+                    colSpan={cols.length / 1.75}
+                  >
+                    <p className="text-md">
+                      {`
+                        Could not find ledger report in selected date range.`}
+                    </p>
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

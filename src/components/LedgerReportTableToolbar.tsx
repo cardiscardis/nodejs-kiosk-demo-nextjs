@@ -59,8 +59,8 @@ export default function LedgerReportTableToolbar({
   });
 
   return (
-    <div className="mb-10 flex justify-between">
-      <div className="flex items-center space-x-6">
+    <div className="mb-10 flex flex-col md:flex-row md:justify-between">
+      <div className="flex flex-col md:flex-row md:items-center space-y-4 md:space-x-6 md:space-y-0">
         <div className="flex flex-col space-y-1">
           <label
             htmlFor="startDate"
@@ -117,7 +117,7 @@ export default function LedgerReportTableToolbar({
         </div>
       </div>
       <CSVLink
-        className={`relative inline-flex self-end ml-6 items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all select-none ${
+        className={`relative mt-6 md:mt-0 inline-flex md:self-end md:ml-6 items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all select-none ${
           data.length === 0 ? 'opacity-50 pointer-events-none' : ''
         }`}
         data={csvData}
