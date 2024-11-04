@@ -40,6 +40,20 @@ export default function Nav() {
                 Invoices
               </Link>
             </div>
+            <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
+              <Link
+                onClick={() => setIsOpen(false)}
+                href="/ledger"
+                className={`text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium ${
+                  pathname === '/ledger'
+                    ? 'border-b-2 border-indigo-500'
+                    : 'border-b-2 border-transparent'
+                }`}
+                aria-current="page"
+              >
+                Ledger
+              </Link>
+            </div>
           </div>
           <div className="-mr-2 flex items-center sm:hidden">
             <button
@@ -101,6 +115,16 @@ export default function Nav() {
             aria-current="page"
           >
             Invoices
+          </Link>
+          <Link
+            onClick={() => setIsOpen(false)}
+            href="/ledger"
+            className={`bg-indigo-50 block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+              pathname === '/ledger' ? ' border-indigo-500 text-indigo-700' : ''
+            }`}
+            aria-current="page"
+          >
+            Ledger
           </Link>
         </div>
       </div>

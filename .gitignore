@@ -39,3 +39,5 @@ next-env.d.ts
 application.yaml
 /prisma/*.db
 /prisma/*.db-journal
+BitPay.config.json
+
