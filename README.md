@@ -1,7 +1,7 @@
 # BitPay Kiosk Demo - Next.js
 
 This is a demonstration Next.js app to show how BitPay can be used in the
-context of a retail kiosk. It utilizes the the `pos` facade and with a simple
+context of a retail kiosk. It utilizes the `Merchant/Payout` facade and with a simple
 configuration file you can customize the `posData` fields that are sent to
 BitPay. This app uses Prisma to manage the database schema and by default
 uses an embedded sqlite database to make it easy to start. Feel free to use other RDBMS like MySQL.
@@ -27,6 +27,17 @@ uses an embedded sqlite database to make it easy to start. Feel free to use othe
 This app can use either a `.env` file or global environment variables. If you
 would like to use a `.env` file, you will need to copy `.env.example` to `.env`
 and update the values.
+
+### BitPay Config File
+
+Run the setup script:
+`node node_modules/bitpay-sdk/dist/setup/BitPaySetup.js`
+
+Follow the on-screen prompts to generate your key and config file. Once the BitPaySetup Script has run and generated the JSON correctly, read the console output and follow the instructions in order to pair your new tokens.
+
+You can find the generated config file and key (if you chose to create a key file) in node_modules/bitpay-sdk/dist/secure/.
+
+Copy generated config file `BitPay.config.json` to `root` of project directory.
 
 ### YAML Configuration
 
@@ -98,6 +109,7 @@ and update the values.
 - `npm install`
 - `cp .env.example .env` and configure it
 - `cp application.example.yaml application.yaml` and configure it
+- Copy generated config file `BitPay.config.json` to `root` of project directory.
 - `npm run migrate`
 - To start in production mode run `npm run build && npm start`
 - To start in development mode run `npm run dev`
