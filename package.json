@@ -23,7 +23,7 @@
     "bitpay-sdk": "6.0.2",
     "dayjs": "1.11.13",
     "eslint-config-next": "15.0.1",
-    "next": "15.0.1",
+    "next": "15.1.0",
     "next-yaml": "1.0.1",
     "react": "19.0.0",
     "react-csv": "2.2.2",
